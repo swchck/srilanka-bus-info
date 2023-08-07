@@ -8,7 +8,7 @@ from telegram.constants import ParseMode
 from urllib.parse import urljoin
 from telegram.helpers import escape_markdown
 
-from constants import BUS_INFORMATION_MESSAGE, BASE_PATH, DATA_NOT_PROVIDED
+from app.constants import BUS_INFORMATION_MESSAGE, BASE_PATH, DATA_NOT_PROVIDED
 
 
 class RouteInfo:

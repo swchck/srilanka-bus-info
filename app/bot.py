@@ -9,8 +9,19 @@
 import os
 import logging
 
+from os import getenv
 from handlers import get_info, search, start
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler
+from telegram import Update
+from telegram.ext import (
+    Application,
+    CommandHandler, 
+    CallbackQueryHandler,
+    Application,
+    CommandHandler,
+    ContextTypes,
+)
+
+# Define a few command handlers.
 
 #####################
 # LOGGER SETTINGS
@@ -22,18 +33,23 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def main() -> None:
-    token = os.getenv("TELEGRAM_TOKEN")
-    application = Application.builder().token(token).build()
-
+async def sri_lanka_bot(text: any) -> None:
+    # Create Application
+    application = (
+        Application.builder().token(getenv("TELEGRAM_TOKEN")).build()
+    )
+    
+    # Add Handlers
     application.add_handler(CommandHandler("start", start.start))
     application.add_handler(CommandHandler("search", search.search_by_number))
     application.add_handler(CommandHandler("s", search.search_by_number))
     application.add_handler(CallbackQueryHandler(get_info.get_route_info))
 
-    # Run the bot until the user presses Ctrl-C
-    application.run_polling()
-
-
-if __name__ == "__main__":
-    main()
+    # Start application
+    await application.bot.set_webhook(url=getenv("WEBHOOK"))
+    await application.update_queue.put(
+        Update.de_json(data=text, bot=application.bot)
+    )
+    async with application:
+        await application.start()
+        await application.stop()

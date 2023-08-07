@@ -3,7 +3,7 @@ import requests
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 
-from constants import CHOOSE_ROUTE, FAILED_TO_GET_ROUTES
+from app.constants import CHOOSE_ROUTE, FAILED_TO_GET_ROUTES
 
 
 async def search_by_number(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
